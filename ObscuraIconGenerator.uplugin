@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "ObscuraIconGenerator",
+	"Description": "Icon Generator for Items",
+	"Category": "Other",
+	"CreatedBy": "Mortal Machines Studio",
+	"CreatedByURL": "https://mortalmachinesstudio.com",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "ObscuraIconGenerator",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "ObscuraIconGeneratorEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
