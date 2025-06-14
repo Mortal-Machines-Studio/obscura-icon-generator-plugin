@@ -188,9 +188,9 @@ void UObscuraIconGeneratorEditorWidget::UpdateSceneCaptureShowOnlyList_Implement
 	if (SceneCaptureActor) SceneCaptureActor->UpdateShowOnlyList();
 }
 
-void UObscuraIconGeneratorEditorWidget::UpdateActorOffset_Implementation()
+void UObscuraIconGeneratorEditorWidget::UpdateActorOffset_Implementation(const bool bOnlyMeasureCollidingComponents)
 {
-	if (SceneCaptureActor) SceneCaptureActor->UpdateCurrentActorOffset();
+	if (SceneCaptureActor) SceneCaptureActor->UpdateCurrentActorOffset(bOnlyMeasureCollidingComponents);
 }
 
 void UObscuraIconGeneratorEditorWidget::UpdatePostProcess_Implementation()
@@ -233,6 +233,7 @@ void UObscuraIconGeneratorEditorWidget::UpdateActorZoom_Implementation(const flo
 
 void UObscuraIconGeneratorEditorWidget::SetActor_Implementation(const TSubclassOf<AActor> InActorClass)
 {
+	ActorClass = InActorClass;
 	if (SceneCaptureActor) {
 		SceneCaptureActor->SetActor(InActorClass);
 	}
@@ -450,7 +451,11 @@ void UObscuraIconGeneratorEditorWidget::PostEditChangeChainProperty(struct FProp
 {
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
 	const FName PropertyName = PropertyChangedEvent.GetMemberPropertyName();
-	// Getting the Struct Property name. By default PostEditChangeChainProperty will return the smallest part of any given property.
+
+	// If the tail or the tail's previous node is not valid we return early
+	if (!PropertyChangedEvent.PropertyChain.GetTail() || !PropertyChangedEvent.PropertyChain.GetTail()->GetPrevNode()) return;
+	
+	// Getting the Struct Property name. By default, PostEditChangeChainProperty will return the smallest part of any given property.
 	// For example FVector, it will return the individual axis that's being changed
 	// Getting the Tail(last node) and going to the previous node we can get the FVector property itself, instead of the X/Y/Z property
 	const FName StructPropertyName = PropertyChangedEvent.PropertyChain.GetTail()->GetPrevNode()->GetValue()->GetFName();

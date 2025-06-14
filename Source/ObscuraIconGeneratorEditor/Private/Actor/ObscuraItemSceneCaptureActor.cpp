@@ -91,10 +91,10 @@ void AObscuraItemSceneCaptureActor::CaptureScenes() const
 	}
 }
 
-void AObscuraItemSceneCaptureActor::UpdateCurrentActorOffset_Implementation()
+void AObscuraItemSceneCaptureActor::UpdateCurrentActorOffset_Implementation(const bool bOnlyMeasureCollidingComponents)
 {
 	if (CurrentActor) {
-		CurrentActor->AddActorLocalOffset(GetMeshCenterPointOffset() * -1.0f);
+		CurrentActor->AddActorLocalOffset(GetMeshCenterPointOffset(bOnlyMeasureCollidingComponents) * -1.0f);
 	}
 }
 
@@ -127,13 +127,37 @@ FVector AObscuraItemSceneCaptureActor::GetMeshCenterPointOffset(const bool bOnly
 	// Getting all the attached actors
 	TArray<AActor*> AllActors;
 	CurrentActor->GetAttachedActors(AllActors);
-	AllActors.Add(CurrentActor); // Adding the current actor to the array as well
+
+	// Adding the current actor to the array as well
+	AllActors.Add(CurrentActor); 
 
 	// Getting the center and bounds of all actors attached to the CurrentActor including the CurrentActor
 	UGameplayStatics::GetActorArrayBounds(AllActors, bOnlyMeasureCollidingComponents, OutCenter, OutBoxExtent);
 
-	// Need to InverseTransformLocation because the OutCenter is in worldspace
-	return  UKismetMathLibrary::InverseTransformLocation(CurrentActor->GetTransform(), OutCenter);
+	// Need to InverseTransformLocation because the OutCenter is in world space
+	return UKismetMathLibrary::InverseTransformLocation(CurrentActor->GetTransform(), OutCenter);	
+}
+
+UStaticMesh* AObscuraItemSceneCaptureActor::GetCurrentActorStaticMesh_Implementation() const
+{
+	if (CurrentActor) {
+		if (const UStaticMeshComponent* StaticMeshComponent = CurrentActor->GetComponentByClass<UStaticMeshComponent>()) {
+			return StaticMeshComponent->GetStaticMesh();
+		}
+	}
+
+	return nullptr;
+}
+
+USkeletalMesh* AObscuraItemSceneCaptureActor::GetCurrentActorSkeletalMesh_Implementation() const
+{
+	if (CurrentActor) {
+		if (const USkeletalMeshComponent* SkeletalMeshComponent = CurrentActor->GetComponentByClass<USkeletalMeshComponent>()) {
+			return SkeletalMeshComponent->GetSkeletalMeshAsset();
+		}
+	}
+
+	return nullptr;
 }
 
 void AObscuraItemSceneCaptureActor::DestroyCurrentActor_Implementation()
@@ -177,7 +201,7 @@ void AObscuraItemSceneCaptureActor::SetActor_Implementation(TSubclassOf<AActor> 
 			// Attaching the Actor to the Scene Component
 			CurrentActor->AttachToComponent(MeshParentSceneComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
-			UpdateCurrentActorOffset();
+			UpdateCurrentActorOffset(false);
 			UpdateShowOnlyList();
 			
 			OnActorSetEvent.Broadcast(CurrentActor);
@@ -260,7 +284,7 @@ void AObscuraItemSceneCaptureActor::UpdateLocation_Implementation(const FVector&
 void AObscuraItemSceneCaptureActor::UpdateRotation_Implementation(const FRotator& NewRotation)
 {
 	if (MeshParentSceneComponent) {
-		MeshParentSceneComponent->SetRelativeRotation(NewRotation);
+		MeshParentSceneComponent->SetWorldRotation(NewRotation);
 		CaptureScenes();
 	}
 }

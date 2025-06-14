@@ -216,7 +216,7 @@ protected:
 	void UpdatePostProcess();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Scene Capture", meta=(ForceAsFunction))
-	void UpdateActorOffset();
+	void UpdateActorOffset(const bool bOnlyMeasureCollidingComponents = false);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Scene Capture", meta=(ForceAsFunction))
 	void UpdateSceneCaptureShowOnlyList();
@@ -290,6 +290,7 @@ protected:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Texture Generation", meta=(ForceAsFunction))
 	UTexture2D* GenerateTexture();
 
+	UFUNCTION(BlueprintCallable, Category="Obscura|Texture Generation")
 	void UpdateGeneratedTextureNameDisplay();
 
 	/*

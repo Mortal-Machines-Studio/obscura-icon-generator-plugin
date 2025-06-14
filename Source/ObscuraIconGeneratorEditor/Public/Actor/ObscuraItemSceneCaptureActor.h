@@ -151,7 +151,7 @@ public:
 	void UpdateShowOnlyList();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Actor", meta=(ForceAsFunction))
-	void UpdateCurrentActorOffset();
+	void UpdateCurrentActorOffset(const bool bOnlyMeasureCollidingComponents = false);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Getters", meta=(ForceAsFunction))
 	void UpdateSceneLight(UPARAM(ref) const FSceneLightData& SceneLightData);
@@ -172,4 +172,10 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category="Actor|Transform")
 	FVector GetMeshCenterPointOffset(const bool bOnlyMeasureCollidingComponents = false) const;
+
+	UFUNCTION(BlueprintPure, BlueprintNativeEvent, Category="Getters", meta=(ForceAsFunction, ToolTip="Fetches the current actor's Static Mesh if it exists."))
+	UStaticMesh* GetCurrentActorStaticMesh() const;
+
+	UFUNCTION(BlueprintPure, BlueprintNativeEvent, Category="Getters", meta=(ForceAsFunction, ToolTip="Fetches the current actor's Static Mesh if it exists."))
+	USkeletalMesh* GetCurrentActorSkeletalMesh() const;
 };
