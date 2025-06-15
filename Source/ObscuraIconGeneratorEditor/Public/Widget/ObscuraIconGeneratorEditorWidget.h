@@ -199,6 +199,18 @@ protected:
 	UFUNCTION(BlueprintSetter, Category="Setter")
 	void SetObscuraActorTransform(UPARAM(ref) const FObscuraActorTransform& NewTransform);
 
+	// To Directly set Actor Rotation
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Scene Capture", meta=(ForceAsFunction))
+	void SetActorLocation(const FVector& NewLocation);
+
+	// To Directly set Actor Rotation
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Scene Capture", meta=(ForceAsFunction))
+	void SetActorRotation(const FRotator& NewRotation);
+
+	// To Directly set Actor Zoom
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Obscura|Scene Capture", meta=(ForceAsFunction))
+	void SetActorZoom(const float& NewZoom);
+
 	/*
 	 * Update Functions
 	 */
@@ -327,6 +339,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category="Obscura|Events", meta=(ForceAsFunction))
 	void OnTextureGenerated(UTexture2D* GeneratedTexture);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category="Obscura|Events", meta=(ForceAsFunction))
+	void OnOpenAsset(const FAssetData& AssetToOpen);
 };
 
 

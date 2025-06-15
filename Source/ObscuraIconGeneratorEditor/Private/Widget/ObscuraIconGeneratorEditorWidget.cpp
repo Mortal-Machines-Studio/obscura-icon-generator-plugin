@@ -183,6 +183,30 @@ void UObscuraIconGeneratorEditorWidget::SetObscuraActorTransform(const FObscuraA
 	}
 }
 
+void UObscuraIconGeneratorEditorWidget::SetActorLocation_Implementation(const FVector& NewLocation)
+{
+	if (SceneCaptureActor) {
+		ObscuraActorTransform.ActorLocation = NewLocation;
+		SceneCaptureActor->UpdateLocation(ObscuraActorTransform.ActorLocation);
+	}
+}
+
+void UObscuraIconGeneratorEditorWidget::SetActorRotation_Implementation(const FRotator& NewRotation)
+{
+	if (SceneCaptureActor) {
+		ObscuraActorTransform.ActorRotation = NewRotation;
+		SceneCaptureActor->UpdateRotation(ObscuraActorTransform.ActorRotation);
+	}
+}
+
+void UObscuraIconGeneratorEditorWidget::SetActorZoom_Implementation(const float& NewZoom)
+{
+	if (SceneCaptureActor) {
+		ObscuraActorTransform.ActorZoom = NewZoom;
+		SceneCaptureActor->UpdateZoom(ObscuraActorTransform.ActorZoom);
+	}
+}
+
 void UObscuraIconGeneratorEditorWidget::UpdateSceneCaptureShowOnlyList_Implementation()
 {
 	if (SceneCaptureActor) SceneCaptureActor->UpdateShowOnlyList();

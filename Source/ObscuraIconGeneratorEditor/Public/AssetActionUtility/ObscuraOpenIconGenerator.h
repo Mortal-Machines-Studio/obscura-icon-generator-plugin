@@ -22,8 +22,7 @@ protected:
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widget")
 	TSubclassOf<UObscuraIconGeneratorEditorWidget> IconGeneratorWidgetClass;*/
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Widget",
-		meta=(ToolTip="This has to be a child class of UObscuraIconGeneratorEditorWidget, otherwise the utility won't run"))
+	UPROPERTY()
 	UEditorUtilityWidgetBlueprint* IconGeneratorWidget = nullptr;
 	
 public:
