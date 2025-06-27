@@ -3,6 +3,8 @@
 
 #include "DeveloperSettings/ObscuraDeveloperSettings.h"
 
+#include "EditorUtilityWidgetBlueprint.h"
+
 UObscuraDeveloperSettings::UObscuraDeveloperSettings()
 {
 	CategoryName = "Plugins";
@@ -13,9 +15,9 @@ TArray<TSoftClassPtr<UObject>> UObscuraDeveloperSettings::GetSupportedClasses() 
 	return SupportedClasses;
 }
 
-TSoftObjectPtr<UEditorUtilityWidgetBlueprint> UObscuraDeveloperSettings::GetIconGeneratorWidgetClass() const
+UEditorUtilityWidgetBlueprint* UObscuraDeveloperSettings::GetIconGeneratorWidgetClass() const
 {
-	return IconGeneratorWidgetClass;
+	return IconGeneratorWidgetClass.LoadSynchronous();
 }
 
 bool UObscuraDeveloperSettings::IsActionForBlueprints() const

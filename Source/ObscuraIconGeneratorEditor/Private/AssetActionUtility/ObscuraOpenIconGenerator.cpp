@@ -10,7 +10,6 @@
 
 UObscuraOpenIconGenerator::UObscuraOpenIconGenerator()
 {
-
 	if (const UObscuraDeveloperSettings* ObscuraDeveloperSettings = GetDefault<UObscuraDeveloperSettings>()) {
 		SupportedClasses = ObscuraDeveloperSettings->GetSupportedClasses();
 		bIsActionForBlueprints = ObscuraDeveloperSettings->IsActionForBlueprints();
@@ -20,7 +19,7 @@ UObscuraOpenIconGenerator::UObscuraOpenIconGenerator()
 void UObscuraOpenIconGenerator::OpenIconGenerator_Implementation()
 {
 	if (const UObscuraDeveloperSettings* ObscuraDeveloperSettings = GetDefault<UObscuraDeveloperSettings>()) {
-		IconGeneratorWidget = ObscuraDeveloperSettings->GetIconGeneratorWidgetClass().Get();
+		IconGeneratorWidget = ObscuraDeveloperSettings->GetIconGeneratorWidgetClass();
 		
 		if (!IconGeneratorWidget) return;
 		

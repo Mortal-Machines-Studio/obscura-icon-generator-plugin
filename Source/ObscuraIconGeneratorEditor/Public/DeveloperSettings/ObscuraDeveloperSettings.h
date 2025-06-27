@@ -42,7 +42,7 @@ public:
 	TArray<TSoftClassPtr<UObject>> GetSupportedClasses() const;
 
 	UFUNCTION(BlueprintPure, Category="Obscura")
-	TSoftObjectPtr<UEditorUtilityWidgetBlueprint> GetIconGeneratorWidgetClass() const;
+	UEditorUtilityWidgetBlueprint* GetIconGeneratorWidgetClass() const;
 
 	UFUNCTION(BlueprintPure, Category="Obscura")
 	bool IsActionForBlueprints() const;

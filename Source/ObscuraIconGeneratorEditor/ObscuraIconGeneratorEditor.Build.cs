@@ -26,7 +26,8 @@ public class ObscuraIconGeneratorEditor : ModuleRules
 			new string[]
 			{
 				"Core", "UMG", "UMGEditor", "DeveloperSettings",
-				"ScriptableEditorWidgets", "InputCore", "Projects", "UnrealEd", "Blutility"
+				"ScriptableEditorWidgets", "InputCore", "Projects", "UnrealEd", "Blutility", 
+				"ToolMenus", "ContentBrowser"
 			}
 		);
 			
