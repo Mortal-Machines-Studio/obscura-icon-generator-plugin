@@ -13,4 +13,6 @@ public:
 	virtual void ShutdownModule() override;
 
 	void RegisterMenus();
+
+	static void OpenIconGenerator(const FAssetData& SelectedAsset);
 };

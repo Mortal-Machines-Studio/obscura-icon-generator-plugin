@@ -3,6 +3,8 @@
 #include "ObscuraIconGeneratorEditor.h"
 #include "ToolMenu.h"
 #include "ContentBrowserMenuContexts.h"
+#include "EditorUtilitySubsystem.h"
+#include "EditorUtilityWidgetBlueprint.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "DeveloperSettings/ObscuraDeveloperSettings.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -61,7 +63,7 @@ void FObscuraIconGeneratorEditorModule::RegisterMenus()
 			if (const UContentBrowserAssetContextMenuContext* Context = InMenu->FindContext<UContentBrowserAssetContextMenuContext>()) {
 				// Getting the class of the selected asset
 				if (UClass* SelectedAssetClass = Context->CommonClass) {
-
+					
 					// Looping Through the SupportedClasses 
 					for (const TSoftClassPtr<UObject>& SupportedClass : SupportedClasses) {
 						// If the select asset's class is a child of the SupportedClass
@@ -69,7 +71,14 @@ void FObscuraIconGeneratorEditorModule::RegisterMenus()
 
 							// Menu Entry Action
 							const FToolUIActionChoice OpenIconGeneratorAction(FExecuteAction::CreateLambda([Context]() {
-								UE_LOG(LogTemp, Warning, TEXT("Open Icon Generator"));
+								// Check if the First selected asset is valid;
+								if (Context->SelectedAssets.IsValidIndex(0)) {
+									// If it is open the Icon Generator
+									OpenIconGenerator(Context->SelectedAssets[0]);
+								}
+								
+								//UE_LOG(LogTemp, Warning, TEXT("Debug: %s"), Context->GetSelectedItems());
+								
 							}));
 
 							// Adding the Menu Entry
@@ -129,6 +138,37 @@ void FObscuraIconGeneratorEditorModule::RegisterMenus()
 	}));*/
 
 	
+}
+
+void FObscuraIconGeneratorEditorModule::OpenIconGenerator(const FAssetData& SelectedAsset)
+{
+	if (const UObscuraDeveloperSettings* ObscuraDeveloperSettings = GetDefault<UObscuraDeveloperSettings>()) {
+		UEditorUtilityWidgetBlueprint* IconGeneratorWidget = ObscuraDeveloperSettings->GetIconGeneratorWidgetClass();
+		UEditorUtilitySubsystem* EditorUtilitySubsystem = GEditor->GetEditorSubsystem<UEditorUtilitySubsystem>();
+		
+		if (!IconGeneratorWidget || !EditorUtilitySubsystem) return;
+		
+		// Making sure IconGenerator Widget is a subclass of UObscuraIconGeneratorEditorWidget
+		if (IconGeneratorWidget && IconGeneratorWidget->GeneratedClass->IsChildOf(UObscuraIconGeneratorEditorWidget::StaticClass())) {
+			// Creating IconGenerator widget 
+			UObscuraIconGeneratorEditorWidget* CreatedIconGeneratorWidget = Cast<UObscuraIconGeneratorEditorWidget>(
+				EditorUtilitySubsystem->SpawnAndRegisterTab(IconGeneratorWidget));
+			
+			if (!CreatedIconGeneratorWidget) return; // If for some reason it's not valid, return.
+
+			// Checking if it's a blueprint
+			if (const UBlueprint* BlueprintAsset = Cast<UBlueprint>(SelectedAsset.GetAsset())) {
+				// Checking if it's an actor blueprint by getting the GeneratedClass's Default Object
+				if (const AActor* DefaultActor = Cast<AActor>(BlueprintAsset->GeneratedClass.GetDefaultObject())) {
+					CreatedIconGeneratorWidget->SetActor(DefaultActor->GetClass());
+				}						
+			} else {
+				// Fallback for any other type of assets. The developer should take care of implementation
+				CreatedIconGeneratorWidget->OnOpenAsset(SelectedAsset);
+			}
+			
+		}
+	}
 }
 
 #undef LOCTEXT_NAMESPACE
