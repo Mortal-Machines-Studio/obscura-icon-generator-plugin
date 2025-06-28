@@ -28,14 +28,6 @@ protected:
 	UPROPERTY(EditAnywhere, Config, Category="Obscura", meta=(ToolTip="This class will be used to instantiate the Icon Generator"))
 	TSoftObjectPtr<UEditorUtilityWidgetBlueprint> IconGeneratorWidgetClass;
 
-	/**
-	 * Is the action for Opening the Icon generator is supposed to work specifically on Blueprints (true) or on all assets (false).
-	 * If true, SupportedClasses is treated as a filter against the Parent Class of selected Blueprint assets.
-	 * Set this to false if you are working with DataAssets
-	 */
-	UPROPERTY(EditAnywhere, Config, Category="Obscura")
-	bool bIsActionForBlueprints = true;
-
 public:
 
 	UFUNCTION(BlueprintPure, Category="Obscura")
@@ -43,7 +35,5 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="Obscura")
 	UEditorUtilityWidgetBlueprint* GetIconGeneratorWidgetClass() const;
-
-	UFUNCTION(BlueprintPure, Category="Obscura")
-	bool IsActionForBlueprints() const;
+	
 };

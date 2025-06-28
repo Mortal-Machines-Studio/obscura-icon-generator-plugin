@@ -15,4 +15,6 @@ public:
 	void RegisterMenus();
 
 	static void OpenIconGenerator(const FAssetData& SelectedAsset);
+
+	static UClass* GetClassFromBlueprintAsset(const FAssetData& Asset);
 };

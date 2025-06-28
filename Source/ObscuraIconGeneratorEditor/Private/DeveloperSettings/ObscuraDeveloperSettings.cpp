@@ -19,8 +19,3 @@ UEditorUtilityWidgetBlueprint* UObscuraDeveloperSettings::GetIconGeneratorWidget
 {
 	return IconGeneratorWidgetClass.LoadSynchronous();
 }
-
-bool UObscuraDeveloperSettings::IsActionForBlueprints() const
-{
-	return bIsActionForBlueprints;
-}
